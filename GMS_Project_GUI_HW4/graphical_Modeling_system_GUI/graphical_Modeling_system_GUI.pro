@@ -13,9 +13,25 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    xmlManager.cpp \
+    xmlErrorCode.cpp \
+    groups.cpp \
+    group.cpp \
+    gmsModel.cpp \
+    components.cpp \
+    component.cpp
 
-HEADERS  += mainwindow.h
+
+HEADERS  += mainwindow.h \
+    xmlManager.h \
+    xmlErrorCode.h \
+    groups.h \
+    group.h \
+    gmsModel.h \
+    components.h \
+    component.h
+
 
 FORMS    += mainwindow.ui
 

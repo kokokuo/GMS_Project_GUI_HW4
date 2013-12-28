@@ -1,0 +1,13 @@
+INPUT(
+./debug\main.o
+./debug\mainwindow.o
+./debug\xmlManager.o
+./debug\xmlErrorCode.o
+./debug\groups.o
+./debug\group.o
+./debug\gmsModel.o
+./debug\components.o
+./debug\component.o
+./debug\qrc_asset.o
+./debug\moc_mainwindow.o
+);

@@ -1,0 +1,13 @@
+INPUT(
+./release\main.o
+./release\mainwindow.o
+./release\xmlManager.o
+./release\xmlErrorCode.o
+./release\groups.o
+./release\group.o
+./release\gmsModel.o
+./release\components.o
+./release\component.o
+./release\qrc_asset.o
+./release\moc_mainwindow.o
+);

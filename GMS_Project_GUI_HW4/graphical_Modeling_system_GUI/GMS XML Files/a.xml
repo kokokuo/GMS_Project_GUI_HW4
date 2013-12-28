@@ -1,0 +1,14 @@
+<GMS>
+	<Components>
+		<Node>
+			<ID>1</ID>
+			<Name>C</Name>
+			<Type>Cube</Type>
+		</Node>
+		<Node>
+			<ID>2</ID>
+			<Name>P</Name>
+			<Type>Pyramid</Type>
+		</Node>
+	</Components>
+</GMS>

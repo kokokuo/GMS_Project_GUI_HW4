@@ -29,4 +29,29 @@ void MainWindow::OnOpenFileButtonClicked(){
     fileName = QFileDialog::getOpenFileName(this,tr("Open GMS XML File"),
                                             fileDir.path(),tr("XML Files (*.xml)"));
 
+    int code = gmsModel.LoadXMLFormatRecord(fileName.toLocal8Bit().constData());
+    if(code == XMLErrorCode::OK){
+
+        //Print
+        vector<Component*> components = this->gmsModel.GetComponents().GetAllComponent();
+        cout << "Components:" << endl;
+        cout << "------------------------------------------------------" <<endl;
+        cout << "   Type   |   ID    |    Name    " <<endl;
+        cout << "------------------------------------------------------" <<endl;
+        for(vector<Component*>::iterator it = components.begin();it != components.end();it++){
+            //使用C語言印出,為了能夠讓印出的格式排版整齊,[0]是擷取自串的字首
+            printf("    %c     |   %2d    |    %s\n",(*it)->GetType()[0],(*it)->GetID(),(*it)->GetName().c_str());
+        }
+
+        map<string,Group*> groups = this->gmsModel.GetGroups().GetAllGroups();
+        cout << "Groups:" << endl;
+        cout << "------------------------------------------------------" <<endl;
+        cout << "   GID   |   Name    |    Member    " <<endl;
+        cout << "------------------------------------------------------" <<endl;
+        for(map<string,Group*>::iterator it = groups.begin();it != groups.end();it++){
+            printf("    %s     |   %s    |    %s\n",it->first.c_str(),(it->second)->GetName().c_str(),(it->second)->GetMembersIdByStringFormat().c_str());
+        }
+
+    }
+
 }

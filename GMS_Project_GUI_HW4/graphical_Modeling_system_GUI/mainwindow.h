@@ -4,6 +4,11 @@
 #include <QMainWindow>
 #include <QFileDialog>
 #include <QString>
+#include <map>
+#include <vector>
+#include "gmsModel.h"
+#include "xmlErrorCode.h"
+
 namespace Ui {
 class MainWindow;
 }
@@ -20,6 +25,8 @@ private:
     Ui::MainWindow *ui;
     //fileName
     QString fileName;
+    GMSModel gmsModel;
+
 private slots:
     //When Click OpenFolder Action Control,it will have a slot OnOpenFileButtonClicked() and go here.
     void OnOpenFileButtonClicked();
