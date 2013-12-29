@@ -33,12 +33,19 @@ public:
     //用在Delete Component時連帶移除Group中
     void RemoveSingleMember(int removeId);
 
+    //GUI用 設定座標
+    void SetPositionX(float x);
+    void SetPositionY(float Y);
+    float GetPositionX();
+    float GetPositionY();
+
 private:
     int id;
     string groupName;
     vector<int> membersId;
     //排序Id
     void SortMembersById();
+    float x,y;
 };
 
 #endif // GROUP_H

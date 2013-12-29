@@ -6,6 +6,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
     //Register synchronous event(SINGAL & SLOT) to close MainWindow
     //by menubar
     QObject::connect(ui->actionExitByMenuBar,SIGNAL(triggered()),this,SLOT(close()));
@@ -39,6 +40,8 @@ void MainWindow::OnOpenFileButtonClicked(){
         cout << "   Type   |   ID    |    Name    " <<endl;
         cout << "------------------------------------------------------" <<endl;
         for(vector<Component*>::iterator it = components.begin();it != components.end();it++){
+
+
             //使用C語言印出,為了能夠讓印出的格式排版整齊,[0]是擷取自串的字首
             printf("    %c     |   %2d    |    %s\n",(*it)->GetType()[0],(*it)->GetID(),(*it)->GetName().c_str());
         }
@@ -51,7 +54,20 @@ void MainWindow::OnOpenFileButtonClicked(){
         for(map<string,Group*>::iterator it = groups.begin();it != groups.end();it++){
             printf("    %s     |   %s    |    %s\n",it->first.c_str(),(it->second)->GetName().c_str(),(it->second)->GetMembersIdByStringFormat().c_str());
         }
-
     }
 
 }
+void MainWindow::SetComponentsDrawPostion(vector<Component*>* components){
+
+    float startX;
+    //有Component
+    if(components->size() >0 ){
+        for(vector<Component*>::iterator it = components->begin();it != components->end();it++){
+            //設定
+        }
+    }
+}
+void MainWindow::SetGroupsDrawPostion(){
+
+}
+

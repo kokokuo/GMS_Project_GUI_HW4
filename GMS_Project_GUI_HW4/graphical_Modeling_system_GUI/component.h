@@ -36,11 +36,25 @@ public:
     string GetName(); //取得名稱
     void SetName(string name); //設定名稱
     void SetComponentType(string type); //設定類型
-private:
+
+    //GUI用 設定座標
+    void SetPositionX(float x);
+    void SetPositionY(float Y);
+    float GetPositionX();
+    float GetPositionY();
+
+    void SetWidth(float width);
+    void SetHeight(float height);
+    float GetWidth();
+    float GetHeight();
+
+protected:
     int id;
     string type;
     string name;
     vector<Group*> GroupsAddedComponent; //紀錄有加入此Component的Group記憶體位址
+    float x,y;
+    float width,height;
 };
 
 #endif // COMPONENT_H

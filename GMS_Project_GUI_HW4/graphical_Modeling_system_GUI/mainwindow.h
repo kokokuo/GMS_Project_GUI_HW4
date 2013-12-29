@@ -22,6 +22,10 @@ public:
     ~MainWindow();
 
 private:
+    //設定顯示在畫布上的初始位置
+    void SetComponentsDrawPostion(vector<Component *> *components);
+    void SetGroupsDrawPostion();
+
     Ui::MainWindow *ui;
     //fileName
     QString fileName;

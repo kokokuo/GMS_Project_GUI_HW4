@@ -91,5 +91,18 @@ void Group::RemoveSingleMember(int removeId){
             break;
         }
     }
+}
 
+
+void Group::SetPositionX(float x){
+    this->x = x;
+}
+void Group::SetPositionY(float y){
+    this->y = y;
+}
+float Group::GetPositionX(){
+    return this->x;
+}
+float Group::GetPositionY(){
+    return this->y;
 }

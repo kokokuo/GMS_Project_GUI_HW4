@@ -36,3 +36,28 @@ void Component::SetName(string name){
 void Component::SetComponentType(string type){
     this->type = type;
 }
+void Component::SetPositionX(float x){
+    this->x = x;
+}
+void Component::SetPositionY(float y){
+    this->y = y;
+}
+float Component::GetPositionX(){
+    return this->x;
+}
+float Component::GetPositionY(){
+    return this->y;
+}
+void Component::SetWidth(float width){
+    this->width = width;
+}
+void Component::SetHeight(float height){
+    this->height = height;
+}
+float Component::GetWidth(){
+    return this->width;
+}
+float Component::GetHeight(){
+    return this->height;
+
+}
