@@ -8,6 +8,7 @@ INPUT(
 ./release\gmsModel.o
 ./release\components.o
 ./release\component.o
+./release\drawView.o
 ./release\qrc_asset.o
 ./release\moc_mainwindow.o
 );

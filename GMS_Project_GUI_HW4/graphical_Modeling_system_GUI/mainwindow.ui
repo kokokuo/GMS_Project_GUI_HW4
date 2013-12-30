@@ -20,7 +20,7 @@
      <x>0</x>
      <y>0</y>
      <width>601</width>
-     <height>21</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -44,11 +44,21 @@
    <addaction name="actionExitByToolBar"/>
   </widget>
   <action name="actionOpenByMenuBar">
+   <property name="icon">
+    <iconset>
+     <normalon>:/toolButton_images/asset images/folder_open_48px.png</normalon>
+    </iconset>
+   </property>
    <property name="text">
     <string>Open</string>
    </property>
   </action>
   <action name="actionExitByMenuBar">
+   <property name="icon">
+    <iconset>
+     <normalon>:/toolButton_images/asset images/exit_48px.png</normalon>
+    </iconset>
+   </property>
    <property name="text">
     <string>Exit</string>
    </property>

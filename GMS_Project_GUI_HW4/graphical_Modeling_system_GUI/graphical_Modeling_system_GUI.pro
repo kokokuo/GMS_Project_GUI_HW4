@@ -20,7 +20,8 @@ SOURCES += main.cpp\
     group.cpp \
     gmsModel.cpp \
     components.cpp \
-    component.cpp
+    component.cpp \
+    drawView.cpp
 
 
 HEADERS  += mainwindow.h \
@@ -30,7 +31,8 @@ HEADERS  += mainwindow.h \
     group.h \
     gmsModel.h \
     components.h \
-    component.h
+    component.h \
+    drawView.h
 
 
 FORMS    += mainwindow.ui

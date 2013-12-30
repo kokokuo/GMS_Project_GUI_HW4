@@ -7,6 +7,14 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    view = new DrawView(&gmsModel); //取得GMSModel
+    this->setCentralWidget(&scrollArea);
+    scrollArea.setWidget(view);
+    scrollArea.setWidgetResizable(true); //透過此行讓放在ScrollArea中的Widget可以與scrollArea放到,並顯示畫的內容
+    scrollArea.horizontalScrollBar()->setValue(100);
+    scrollArea.verticalScrollBar()->setValue(100);
+
+
     //Register synchronous event(SINGAL & SLOT) to close MainWindow
     //by menubar
     QObject::connect(ui->actionExitByMenuBar,SIGNAL(triggered()),this,SLOT(close()));
@@ -16,6 +24,9 @@ MainWindow::MainWindow(QWidget *parent) :
     //open FileDialog
     QObject::connect(ui->actionOpenByMenuBar,SIGNAL(triggered()),this,SLOT(OnOpenFileButtonClicked()));
     QObject::connect(ui->actionOpenFolderByToolBar,SIGNAL(triggered()),this,SLOT(OnOpenFileButtonClicked()));
+
+
+    view->update();
 }
 
 MainWindow::~MainWindow()
@@ -33,18 +44,17 @@ void MainWindow::OnOpenFileButtonClicked(){
     int code = gmsModel.LoadXMLFormatRecord(fileName.toLocal8Bit().constData());
     if(code == XMLErrorCode::OK){
 
-        //Print
         vector<Component*> components = this->gmsModel.GetComponents().GetAllComponent();
         cout << "Components:" << endl;
         cout << "------------------------------------------------------" <<endl;
         cout << "   Type   |   ID    |    Name    " <<endl;
         cout << "------------------------------------------------------" <<endl;
         for(vector<Component*>::iterator it = components.begin();it != components.end();it++){
-
-
             //使用C語言印出,為了能夠讓印出的格式排版整齊,[0]是擷取自串的字首
             printf("    %c     |   %2d    |    %s\n",(*it)->GetType()[0],(*it)->GetID(),(*it)->GetName().c_str());
         }
+    }
+    if(this->gmsModel.GetGroups().GetAllGroups().size() >0){
 
         map<string,Group*> groups = this->gmsModel.GetGroups().GetAllGroups();
         cout << "Groups:" << endl;
@@ -55,19 +65,9 @@ void MainWindow::OnOpenFileButtonClicked(){
             printf("    %s     |   %s    |    %s\n",it->first.c_str(),(it->second)->GetName().c_str(),(it->second)->GetMembersIdByStringFormat().c_str());
         }
     }
-
+    view->SetComponentsDrawPostion();
+    view->SetGroupsDrawPostion();
+    view->update();
 }
-void MainWindow::SetComponentsDrawPostion(vector<Component*>* components){
 
-    float startX;
-    //有Component
-    if(components->size() >0 ){
-        for(vector<Component*>::iterator it = components->begin();it != components->end();it++){
-            //設定
-        }
-    }
-}
-void MainWindow::SetGroupsDrawPostion(){
-
-}
 

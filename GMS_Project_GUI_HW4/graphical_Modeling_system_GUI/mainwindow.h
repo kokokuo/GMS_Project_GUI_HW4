@@ -8,6 +8,8 @@
 #include <vector>
 #include "gmsModel.h"
 #include "xmlErrorCode.h"
+#include "drawView.h"
+
 
 namespace Ui {
 class MainWindow;
@@ -22,15 +24,13 @@ public:
     ~MainWindow();
 
 private:
-    //設定顯示在畫布上的初始位置
-    void SetComponentsDrawPostion(vector<Component *> *components);
-    void SetGroupsDrawPostion();
 
     Ui::MainWindow *ui;
     //fileName
     QString fileName;
     GMSModel gmsModel;
-
+    DrawView* view;
+    QScrollArea scrollArea;
 private slots:
     //When Click OpenFolder Action Control,it will have a slot OnOpenFileButtonClicked() and go here.
     void OnOpenFileButtonClicked();

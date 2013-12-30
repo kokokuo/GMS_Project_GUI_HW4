@@ -47,6 +47,8 @@ public:
     void SetHeight(float height);
     float GetWidth();
     float GetHeight();
+    //確認GUI滑鼠的點擊座標是否有按掉
+    bool BePressed(float x,float y);
 
 protected:
     int id;
