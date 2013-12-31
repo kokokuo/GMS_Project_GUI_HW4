@@ -38,7 +38,7 @@ public:
     void SetPositionY(float Y);
     float GetPositionX();
     float GetPositionY();
-
+    bool CheckBePressed(float x,float y);
 private:
     int id;
     string groupName;

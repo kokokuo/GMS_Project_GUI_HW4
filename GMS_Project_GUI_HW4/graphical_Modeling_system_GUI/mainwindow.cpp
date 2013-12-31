@@ -6,11 +6,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
+    this->setFixedSize(800,600);
     view = new DrawView(&gmsModel); //取得GMSModel
     this->setCentralWidget(&scrollArea);
     scrollArea.setWidget(view);
-    scrollArea.setWidgetResizable(true); //透過此行讓放在ScrollArea中的Widget可以與scrollArea放到,並顯示畫的內容
+    //透過此行讓放在ScrollArea中的Widget可以與scrollArea一起縮放,不過便不會有Scrollbar的出現
+    //scrollArea.setWidgetResizable(true);
     scrollArea.horizontalScrollBar()->setValue(100);
     scrollArea.verticalScrollBar()->setValue(100);
 
@@ -40,8 +41,9 @@ void MainWindow::OnOpenFileButtonClicked(){
     fileDir.cd("../" + PathDestination);
     fileName = QFileDialog::getOpenFileName(this,tr("Open GMS XML File"),
                                             fileDir.path(),tr("XML Files (*.xml)"));
-
+    //載入檔案
     int code = gmsModel.LoadXMLFormatRecord(fileName.toLocal8Bit().constData());
+    //測試輸出
     if(code == XMLErrorCode::OK){
 
         vector<Component*> components = this->gmsModel.GetComponents().GetAllComponent();
@@ -65,8 +67,10 @@ void MainWindow::OnOpenFileButtonClicked(){
             printf("    %s     |   %s    |    %s\n",it->first.c_str(),(it->second)->GetName().c_str(),(it->second)->GetMembersIdByStringFormat().c_str());
         }
     }
+    //設定出示繪圖座標
     view->SetComponentsDrawPostion();
     view->SetGroupsDrawPostion();
+    //更新畫面
     view->update();
 }
 

@@ -26,13 +26,15 @@ float DrawComponentData::GROUP_DIFF_Y = 50;
 
 DrawView::DrawView(GMSModel *gmsModel)
 {
+    resize(1980,1080);
     this->model = gmsModel;
     installEventFilter(this);
+    isComponentPressed = false;
 }
 void DrawView::paintEvent(QPaintEvent *){
     QPainter painter(this);
     painter.fillRect(0,0,this->width(),this->height(),Qt::white); //作為背景,寬與高會隨著拖拉而改變
-
+    //繪圖
     vector<Component*> drawComponents = this->model->GetComponents().GetAllComponent();
     if(drawComponents.size() >0 ){
         for(unsigned int i = 0; i < drawComponents.size(); i++){
@@ -41,7 +43,7 @@ void DrawView::paintEvent(QPaintEvent *){
                    drawComponents[i]->GetPositionY(),
                    drawComponents[i]->GetWidth(),
                    drawComponents[i]->GetHeight());
-
+            //判斷類型
             if(drawComponents[i]->GetType() == DrawComponentData::CubeType){
                 painter.setPen(Qt::black);
                 painter.drawText(rect,Qt::AlignCenter,QString::fromStdString(drawComponents[i]->GetName()));
@@ -85,34 +87,37 @@ void DrawView::paintEvent(QPaintEvent *){
      }
 }
 void DrawView::SetComponentsDrawPostion(){
-    if(this->model->GetComponents().GetAllComponent().size() >0 ){
-        for(unsigned int i = 0; i < this->model->GetComponents().GetAllComponent().size(); i++){
-            this->model->GetComponents().GetAllComponent()[i]->SetPositionX(DrawComponentData::COMPONENT_BEGIN_X);
-            this->model->GetComponents().GetAllComponent()[i]->SetPositionY(DrawComponentData::COMPONENT_BEGIN_Y + i * DrawComponentData::COMPONENT_DIFF_Y);
-            if(this->model->GetComponents().GetAllComponent()[i]->GetType() == DrawComponentData::CubeType){
-                this->model->GetComponents().GetAllComponent()[i]->SetWidth(DrawComponentData::CUBE_WIDTH);
-                this->model->GetComponents().GetAllComponent()[i]->SetHeight(DrawComponentData::CUBE_HEIGHT);
+    //設定座標
+    vector<Component*> drawComponents = this->model->GetComponents().GetAllComponent();
+    if(drawComponents.size() >0 ){
+        for(unsigned int i = 0; i < drawComponents.size(); i++){
+            drawComponents[i]->SetPositionX(DrawComponentData::COMPONENT_BEGIN_X);
+            drawComponents[i]->SetPositionY(DrawComponentData::COMPONENT_BEGIN_Y + i * DrawComponentData::COMPONENT_DIFF_Y);
+            if(drawComponents[i]->GetType() == DrawComponentData::CubeType){
+                drawComponents[i]->SetWidth(DrawComponentData::CUBE_WIDTH);
+                drawComponents[i]->SetHeight(DrawComponentData::CUBE_HEIGHT);
             }
             else if(this->model->GetComponents().GetAllComponent()[i]->GetType() == DrawComponentData::PyramidType){
-                this->model->GetComponents().GetAllComponent()[i]->SetWidth(DrawComponentData::PYRAMID_WIDTH);
-                this->model->GetComponents().GetAllComponent()[i]->SetHeight(DrawComponentData::PYRAMID_HEIGHT);
+                drawComponents[i]->SetWidth(DrawComponentData::PYRAMID_WIDTH);
+                drawComponents[i]->SetHeight(DrawComponentData::PYRAMID_HEIGHT);
             }
             else if(this->model->GetComponents().GetAllComponent()[i]->GetType() == DrawComponentData::SphereType){
-                this->model->GetComponents().GetAllComponent()[i]->SetWidth(DrawComponentData::SPHERE_WIDTH);
-                this->model->GetComponents().GetAllComponent()[i]->SetHeight(DrawComponentData::SPHERE_HEIGHT);
+                drawComponents[i]->SetWidth(DrawComponentData::SPHERE_WIDTH);
+                drawComponents[i]->SetHeight(DrawComponentData::SPHERE_HEIGHT);
             }
             else if(this->model->GetComponents().GetAllComponent()[i]->GetType() == DrawComponentData::LineType){
-                this->model->GetComponents().GetAllComponent()[i]->SetWidth(DrawComponentData::LINE_WIDTH);
-                this->model->GetComponents().GetAllComponent()[i]->SetHeight(DrawComponentData::LINE_HEIGHT);
+                drawComponents[i]->SetWidth(DrawComponentData::LINE_WIDTH);
+                drawComponents[i]->SetHeight(DrawComponentData::LINE_HEIGHT);
             }
         }
     }
 }
 void DrawView::SetGroupsDrawPostion(){
-    if(this->model->GetGroups().GetGroupByVectorContainer().size() >0 ){
-        for(unsigned int i = 0; i < this->model->GetGroups().GetGroupByVectorContainer().size(); i++){
-            this->model->GetGroups().GetGroupByVectorContainer()[i]->SetPositionX(DrawComponentData::GROUP_BEGIN_X);
-            this->model->GetGroups().GetGroupByVectorContainer()[i]->SetPositionY(DrawComponentData::GROUP_BEGIN_Y + i * DrawComponentData::GROUP_BEGIN_Y);
+    vector<Group*> drawGroups = this->model->GetGroups().GetGroupByVectorContainer();
+    if(drawGroups.size() >0 ){
+        for(unsigned int i = 0; i < drawGroups.size(); i++){
+            drawGroups[i]->SetPositionX(DrawComponentData::GROUP_BEGIN_X);
+            drawGroups[i]->SetPositionY(DrawComponentData::GROUP_BEGIN_Y + i * DrawComponentData::GROUP_BEGIN_Y);
         }
     }
 }
@@ -121,17 +126,57 @@ bool DrawView::eventFilter(QObject *object, QEvent *event)
     if (event->type() == QEvent::MouseMove)
     {
         QMouseEvent *e = (QMouseEvent*)event;
+        //如果有按壓到Component物件
+        if(isComponentPressed){
+            //拖移 = 原先的物件座標 + 移動的座標位移差(現在的位移座標 - 原先的座標)
+            dragComponent->SetPositionX(dragComponent->GetPositionX() + (e->pos().x() -componentStartPoint.x()) );
+            dragComponent->SetPositionY(dragComponent->GetPositionY() + (e->pos().y() -componentStartPoint.y()) );
+            componentStartPoint = e->pos();
+        }
+        //如果有按壓到Group物件
+        else if(isGroupPressed){
+            //拖移 = 原先的物件座標 + 移動的座標位移差(現在的位移座標 - 原先的座標)
+            dragGroup->SetPositionX(dragGroup->GetPositionX() + (e->pos().x() -groupStartPoint.x()) );
+            dragGroup->SetPositionY(dragGroup->GetPositionY() + (e->pos().y() -groupStartPoint.y()) );
+            groupStartPoint = e->pos();
+        }
+        this->update();
 
     }
     else if (event->type() == QEvent::MouseButtonPress)
     {
         QMouseEvent *e = (QMouseEvent*)event;
-
+        //判斷有無拖拉Component
+        vector<Component*> drawComponents = this->model->GetComponents().GetAllComponent();
+        if(drawComponents.size() >0 ){
+           for(unsigned int i = 0; i < drawComponents.size(); i++){
+               if(drawComponents[i]->CheckBePressed(e->pos().x(), e->pos().y() ) && !isComponentPressed){
+                   isComponentPressed = true;
+                   componentStartPoint = e->pos();
+                   dragComponent = drawComponents[i];
+                   break;
+               }
+           }
+        }
+        //判斷有無拖拉Group
+        vector<Group*> drawGroups = this->model->GetGroups().GetGroupByVectorContainer();
+        if(drawGroups.size() >0 ){
+            for(unsigned int i = 0; i < drawGroups.size(); i++){
+                if(drawGroups[i]->CheckBePressed(e->pos().x(), e->pos().y() ) && !isGroupPressed){
+                    isGroupPressed = true;
+                    groupStartPoint = e->pos();
+                    dragGroup = drawGroups[i];
+                    break;
+                }
+            }
+        }
+        this->update();
     }
     else if (event->type() == QEvent::MouseButtonRelease)
     {
-        QMouseEvent *e = (QMouseEvent*)event;
-
+        isComponentPressed = false;
+        isGroupPressed = false;
+        this->update();
     }
 
     return false;

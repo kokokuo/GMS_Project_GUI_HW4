@@ -61,7 +61,7 @@ float Component::GetHeight(){
     return this->height;
 
 }
-bool Component::BePressed(float x,float y){
+bool Component::CheckBePressed(float x,float y){
     if(x > this->x && x < this->x + this->width && y < this->y + this->height && y > this->y){
         return true;
     }

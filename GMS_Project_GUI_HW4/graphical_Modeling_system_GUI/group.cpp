@@ -106,3 +106,12 @@ float Group::GetPositionX(){
 float Group::GetPositionY(){
     return this->y;
 }
+bool Group::CheckBePressed(float x,float y){
+   int wordLength = 16;
+   wordLength += this->GetName().length();
+   wordLength += 2*(this->membersId.size())-1;
+
+   if(x >= this->x && x<= this->x + wordLength*7 && y >= this->y -10 && y <= this->y)
+       return true;
+   return false;
+}
