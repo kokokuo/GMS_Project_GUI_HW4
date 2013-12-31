@@ -62,7 +62,10 @@ float Component::GetHeight(){
 
 }
 bool Component::CheckBePressed(float x,float y){
-    if(x > this->x && x < this->x + this->width && y < this->y + this->height && y > this->y){
+    if(this->type != "Line" &&  x > this->x && x < this->x + this->width && y < this->y + this->height && y > this->y){
+        return true;
+    }
+    else if(this->type == "Line" &&  x > this->x && x < this->x + this->width && y < this->y + this->height +20 && y > this->y){
         return true;
     }
     return false;

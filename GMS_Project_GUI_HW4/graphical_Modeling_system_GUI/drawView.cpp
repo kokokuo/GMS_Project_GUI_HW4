@@ -71,7 +71,7 @@ void DrawView::paintEvent(QPaintEvent *){
             }
             else if(this->model->GetComponents().GetAllComponent()[i]->GetType() == DrawComponentData::LineType){
                 painter.setPen(Qt::blue);
-                painter.drawRect(drawComponents[i]->GetPositionX(),drawComponents[i]->GetPositionY()+30
+                painter.drawRect(drawComponents[i]->GetPositionX(),drawComponents[i]->GetPositionY()
                                  ,drawComponents[i]->GetWidth(),drawComponents[i]->GetHeight());
                 painter.setPen(Qt::black);
                 painter.drawText(drawComponents[i]->GetPositionX(),drawComponents[i]->GetPositionY()
